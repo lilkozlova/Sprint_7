@@ -1,7 +1,11 @@
+import dto.request.CourierBase;
+import dto.request.CreateCourier;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
+import static org.apache.http.HttpStatus.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
@@ -11,54 +15,53 @@ public class LoginCourierTest {
     private String password;
     private String firstName;
 
-    @Test
-    public void shouldReturnId() {
+
+    @Before
+    public void setUp() {
         login = RandomStringUtils.randomAlphabetic(10);
         password = RandomStringUtils.randomAlphabetic(10);
         firstName = RandomStringUtils.randomAlphabetic(10);
+        CreateCourier request = new CreateCourier(login, password, firstName);
 
         courierSteps
-                .createCourier(login, password, firstName);
+                .createCourier(request);
+    }
+
+    @Test
+    public void shouldReturnId() {
+        CourierBase request = new CourierBase(login, password);
 
         courierSteps
-                .loginCourier(login, password)
-                .statusCode(200)
+                .loginCourier(request)
+                .statusCode(SC_OK)
                 .body("id", notNullValue());
     }
 
     @Test
     public void mandatoryFieldsShouldBeFilled() {
-        login = RandomStringUtils.randomAlphabetic(10);
-        password = RandomStringUtils.randomAlphabetic(10);
-        firstName = RandomStringUtils.randomAlphabetic(10);
+        CourierBase request = new CourierBase("", password);
 
         courierSteps
-                .createCourier(login, password, firstName);
-
-        courierSteps
-                .loginCourier("", password)
-                .statusCode(400)
+                .loginCourier(request)
+                .statusCode(SC_BAD_REQUEST)
                 .body("message", is("Недостаточно данных для входа"));
     }
 
     @Test
     public void wrongPasswordNotFound() {
-        login = RandomStringUtils.randomAlphabetic(10);
-        password = RandomStringUtils.randomAlphabetic(10);
-        firstName = RandomStringUtils.randomAlphabetic(10);
+        CourierBase request = new CourierBase(login, "1234");
 
         courierSteps
-                .createCourier(login, password, firstName);
-
-        courierSteps
-                .loginCourier(login, "1234")
-                .statusCode(404)
+                .loginCourier(request)
+                .statusCode(SC_NOT_FOUND)
                 .body("message", is("Учетная запись не найдена"));
     }
 
     @After
     public void tearDown() {
-        Integer id = courierSteps.loginCourier(login, password)
+        CourierBase request = new CourierBase(login, "1234");
+
+        Integer id = courierSteps.loginCourier(request)
                 .extract().body().path("id");
         if (id != null) {
             courierSteps.deleteCourier(id);

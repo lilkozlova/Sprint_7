@@ -1,3 +1,5 @@
+import dto.request.CourierBase;
+import dto.request.CreateCourier;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 
@@ -9,28 +11,21 @@ public class CourierSteps {
     private static final String LOGIN = "/api/v1/courier/login";
     private static final String DELETE = "/api/v1/courier/{id}";
 
-    public ValidatableResponse createCourier(String login, String password, String firstName) {
+    public ValidatableResponse createCourier(CreateCourier request) {
         return given().log().ifValidationFails()
                 .contentType(ContentType.JSON)
                 .baseUri(HOST)
-                .body("{\n" +
-                        "    \"login\": \"" + login + "\",\n" +
-                        "    \"password\": \"" + password + "\",\n" +
-                        "    \"firstName\": \"" + firstName + "\"\n" +
-                        "}")
+                .body(request)
                 .when()
                 .post(COURIER)
                 .then();
     }
 
-    public ValidatableResponse loginCourier(String login, String password) {
+    public ValidatableResponse loginCourier(CourierBase request) {
         return given()
                 .contentType(ContentType.JSON)
                 .baseUri(HOST)
-                .body("{\n" +
-                        "    \"login\": \"" + login + "\",\n" +
-                        "    \"password\": \"" + password + "\"\n" +
-                        "}")
+                .body(request)
                 .when()
                 .post(LOGIN)
                 .then();

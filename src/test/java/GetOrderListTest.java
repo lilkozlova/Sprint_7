@@ -1,6 +1,6 @@
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 
+import static org.apache.http.HttpStatus.SC_OK;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 
@@ -12,7 +12,7 @@ public class GetOrderListTest {
 
         getOrderListSteps
                 .getOrderList(1, "", 3, 1)
-                .statusCode(200)
+                .statusCode(SC_OK)
                 .body("orders", notNullValue());
     }
 }

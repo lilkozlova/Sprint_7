@@ -11,12 +11,10 @@ public class GetOrderListSteps {
         return given().log().ifValidationFails()
                 .contentType(ContentType.JSON)
                 .baseUri(HOST)
-                .body("{\n" +
-                        "    \"courierId\": \"" + courierId + "\",\n" +
-                        "    \"nearestStation\": \"" + nearestStation + "\",\n" +
-                        "    \"limit\": \"" + limit + "\",\n" +
-                        "    \"page\": \"" + page + "\"\n" +
-                        "}")
+                .queryParams("courierId", courierId)
+                .queryParams("nearestStation", nearestStation)
+                .queryParams("limit", limit)
+                .queryParams("page", page)
                 .when()
                 .get(ORDERS)
                 .then();

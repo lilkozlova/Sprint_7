@@ -1,3 +1,4 @@
+import dto.request.CreateOrder;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -6,6 +7,7 @@ import org.junit.runners.Parameterized;
 import java.util.Arrays;
 import java.util.Collection;
 
+import static org.apache.http.HttpStatus.SC_CREATED;
 import static org.hamcrest.core.IsNull.notNullValue;
 
 @RunWith(Parameterized.class)
@@ -47,10 +49,11 @@ public class CreateOrderTest {
         deliveryDate = "2025-03-12";
         comment = RandomStringUtils.randomAlphabetic(10);
 
+        CreateOrder request = new CreateOrder(firstName, lastName, address, metroStation,
+                phone, rentTime, deliveryDate, comment, color);
         createOrderSteps
-                .createOrder(firstName, lastName, address, metroStation,
-                        phone, rentTime, deliveryDate, comment, color)
-                .statusCode(201)
+                .createOrder(request)
+                .statusCode(SC_CREATED)
                 .body("track", notNullValue());
     }
 }
