@@ -1,5 +1,7 @@
 import dto.request.CourierBase;
 import dto.request.CreateCourier;
+import io.qameta.allure.Description;
+import io.qameta.allure.junit4.DisplayName;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.http.HttpStatus;
 import org.junit.After;
@@ -16,6 +18,8 @@ public class CreateCourierTests {
     private String firstName;
 
     @Test
+    @DisplayName("Создание нового курьера")
+    @Description("Проверяем создаётся ли курьер при правильном заполнении полей")
     public void shouldReturnOkTrue() {
         login = RandomStringUtils.randomAlphabetic(10);
         password = RandomStringUtils.randomAlphabetic(10);
@@ -29,6 +33,8 @@ public class CreateCourierTests {
     }
 
     @Test
+    @DisplayName("Создание нового курьера без логина")
+    @Description("Проверяем возвращается ли ошибка при не заполненном обязательном поле")
     public void mandatoryFieldsShouldBeFilled() {
         password = RandomStringUtils.randomAlphabetic(10);
         firstName = RandomStringUtils.randomAlphabetic(10);
@@ -41,6 +47,8 @@ public class CreateCourierTests {
     }
 
     @Test
+    @DisplayName("Создание двух одинаковых курьеров")
+    @Description("Проверяем возвращается ли ошибка при дублировании логина курьера")
     public void duplicateLoginNotAllowed() {
         login = "login";
         password = RandomStringUtils.randomAlphabetic(10);

@@ -1,5 +1,7 @@
 import dto.request.CourierBase;
 import dto.request.CreateCourier;
+import io.qameta.allure.Description;
+import io.qameta.allure.junit4.DisplayName;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -28,6 +30,8 @@ public class LoginCourierTest {
     }
 
     @Test
+    @DisplayName("Успешная авторизация курьера")
+    @Description("Проверяем может ли курьер авторизоваться в существующий аккаунт")
     public void shouldReturnId() {
         CourierBase request = new CourierBase(login, password);
 
@@ -38,6 +42,8 @@ public class LoginCourierTest {
     }
 
     @Test
+    @DisplayName("Авторизация без логина")
+    @Description("Попытка авторизоваться в существующий аккаунт курьера без логина")
     public void mandatoryFieldsShouldBeFilled() {
         CourierBase request = new CourierBase("", password);
 
@@ -48,6 +54,8 @@ public class LoginCourierTest {
     }
 
     @Test
+    @DisplayName("Авторизация c неверным паролем")
+    @Description("Попытка авторизоваться в существующий аккаунт используя неверный пароль")
     public void wrongPasswordNotFound() {
         CourierBase request = new CourierBase(login, "1234");
 

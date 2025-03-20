@@ -1,4 +1,6 @@
 import dto.request.CreateOrder;
+import io.qameta.allure.Description;
+import io.qameta.allure.junit4.DisplayName;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,6 +41,8 @@ public class CreateOrderTest {
     }
 
     @Test
+    @DisplayName("Создание заказа")
+    @Description("Проверяем создаётся ли заказ при правильном заполнении полей")
     public void responseShouldContentTrackNumber() {
         firstName = RandomStringUtils.randomAlphabetic(10);
         lastName = RandomStringUtils.randomAlphabetic(10);

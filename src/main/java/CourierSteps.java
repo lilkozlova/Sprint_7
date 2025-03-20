@@ -1,5 +1,6 @@
 import dto.request.CourierBase;
 import dto.request.CreateCourier;
+import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 
@@ -11,6 +12,7 @@ public class CourierSteps {
     private static final String LOGIN = "/api/v1/courier/login";
     private static final String DELETE = "/api/v1/courier/{id}";
 
+    @Step("Отправляем POST-запрос на " + HOST + COURIER)
     public ValidatableResponse createCourier(CreateCourier request) {
         return given().log().ifValidationFails()
                 .contentType(ContentType.JSON)
@@ -21,6 +23,7 @@ public class CourierSteps {
                 .then();
     }
 
+    @Step("Отправляем POST-запрос на " + HOST + LOGIN)
     public ValidatableResponse loginCourier(CourierBase request) {
         return given()
                 .contentType(ContentType.JSON)
@@ -31,6 +34,7 @@ public class CourierSteps {
                 .then();
     }
 
+    @Step("Отправляем DELETE-запрос на " + HOST + DELETE)
     public ValidatableResponse deleteCourier(int id) {
         return given()
                 .contentType(ContentType.JSON)

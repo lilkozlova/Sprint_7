@@ -1,4 +1,5 @@
 import dto.request.CreateOrder;
+import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 
@@ -9,6 +10,7 @@ public class CreateOrderSteps {
     private static final String ORDERS = "/api/v1/orders";
 
 
+    @Step("Отправляем POST-запрос на " + HOST + ORDERS)
     public ValidatableResponse createOrder(CreateOrder request) {
         return given().log().ifValidationFails()
                 .contentType(ContentType.JSON)
